@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      influencers: {
+        Row: {
+          alert: string | null
+          audience_age: string
+          audience_country: string
+          audience_female_pct: number
+          bio: string
+          city: string
+          collaborations: string[]
+          created_at: string
+          engagement: number
+          fee: number
+          followers: number
+          handle: string
+          id: string
+          main_niche: string
+          name: string
+          platform: string
+          secondary_niches: string[]
+          tone: string
+          values: string[]
+        }
+        Insert: {
+          alert?: string | null
+          audience_age?: string
+          audience_country?: string
+          audience_female_pct?: number
+          bio?: string
+          city?: string
+          collaborations?: string[]
+          created_at?: string
+          engagement?: number
+          fee?: number
+          followers?: number
+          handle: string
+          id?: string
+          main_niche: string
+          name: string
+          platform: string
+          secondary_niches?: string[]
+          tone?: string
+          values?: string[]
+        }
+        Update: {
+          alert?: string | null
+          audience_age?: string
+          audience_country?: string
+          audience_female_pct?: number
+          bio?: string
+          city?: string
+          collaborations?: string[]
+          created_at?: string
+          engagement?: number
+          fee?: number
+          followers?: number
+          handle?: string
+          id?: string
+          main_niche?: string
+          name?: string
+          platform?: string
+          secondary_niches?: string[]
+          tone?: string
+          values?: string[]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
