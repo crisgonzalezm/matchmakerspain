@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaigns: {
+        Row: {
+          brief: Json
+          created_at: string
+          id: string
+          name: string
+          ranking: Json
+          shortlist: string[]
+        }
+        Insert: {
+          brief?: Json
+          created_at?: string
+          id?: string
+          name: string
+          ranking?: Json
+          shortlist?: string[]
+        }
+        Update: {
+          brief?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          ranking?: Json
+          shortlist?: string[]
+        }
+        Relationships: []
+      }
       influencers: {
         Row: {
           alert: string | null
