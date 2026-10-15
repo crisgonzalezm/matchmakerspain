@@ -1,0 +1,1 @@
+ALTER TABLE public.campaigns ADD COLUMN proposal text, ADD COLUMN proposal_at timestamptz;
