@@ -32,13 +32,14 @@ export const generateProposal = createServerFn({ method: "POST" })
 
     const instructions = `Eres director/a de cuentas de una agencia de comunicación y PR española. Redacta una propuesta profesional de campaña con influencers lista para presentar al cliente, en español, con tono de agencia: claro, seguro, cálido y concreto.
 Formato: Markdown sencillo. Usa solo encabezados "## " y "### ", párrafos, listas con "- " y **negritas**. No uses tablas ni emojis.
-Estructura exacta con estos encabezados ##:
-## Resumen ejecutivo (3-4 líneas)
+Usa exactamente estos seis encabezados ## (solo el texto indicado, sin añadir nada entre paréntesis):
+## Resumen ejecutivo — 3-4 líneas.
 ## Objetivo y enfoque estratégico
-## Perfiles recomendados (un ### por perfil con nombre y usuario; por qué encaja con la marca y qué contenido proponemos: reel de rutina, unboxing, tutorial, carrusel, etc.)
+## Perfiles recomendados — un ### por perfil con nombre y usuario; por qué encaja con la marca y qué contenido proponemos (reel de rutina, unboxing, tutorial, carrusel…).
 ## Riesgos identificados y cómo los gestionaremos
-## Presupuesto (lista con el desglose por perfil en euros, total, y margen frente al presupuesto disponible; si se supera, indícalo y propón cómo ajustarlo)
-## Próximos pasos y calendario orientativo (por semanas)
+## Presupuesto — lista con el desglose por perfil en euros, total y margen frente al presupuesto disponible; si se supera, indícalo y propón cómo ajustarlo.
+## Próximos pasos y calendario orientativo — por semanas.
+El texto tras el guion es una instrucción para ti: no lo copies en el encabezado.
 No inventes datos de los perfiles distintos de los proporcionados. No incluyas título principal ni firma.`;
 
     const apiKey = process.env["LOVABLE_API_KEY"];
