@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NuevaCampanaRouteImport } from './routes/nueva-campana'
+import { Route as MisCampanasIndexRouteImport } from './routes/mis-campanas.index'
+import { Route as MisCampanasIdRouteImport } from './routes/mis-campanas.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +24,50 @@ const NuevaCampanaRoute = NuevaCampanaRouteImport.update({
   path: '/nueva-campana',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MisCampanasIndexRoute = MisCampanasIndexRouteImport.update({
+  id: '/mis-campanas/',
+  path: '/mis-campanas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MisCampanasIdRoute = MisCampanasIdRouteImport.update({
+  id: '/mis-campanas/$id',
+  path: '/mis-campanas/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/nueva-campana': typeof NuevaCampanaRoute
+  '/mis-campanas/$id': typeof MisCampanasIdRoute
+  '/mis-campanas/': typeof MisCampanasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/nueva-campana': typeof NuevaCampanaRoute
+  '/mis-campanas/$id': typeof MisCampanasIdRoute
+  '/mis-campanas': typeof MisCampanasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/nueva-campana': typeof NuevaCampanaRoute
+  '/mis-campanas/$id': typeof MisCampanasIdRoute
+  '/mis-campanas/': typeof MisCampanasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/nueva-campana'
+  fullPaths: '/' | '/nueva-campana' | '/mis-campanas/$id' | '/mis-campanas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/nueva-campana'
-  id: '__root__' | '/' | '/nueva-campana'
+  to: '/' | '/nueva-campana' | '/mis-campanas/$id' | '/mis-campanas'
+  id:
+    '__root__' | '/' | '/nueva-campana' | '/mis-campanas/$id' | '/mis-campanas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   NuevaCampanaRoute: typeof NuevaCampanaRoute
+  MisCampanasIdRoute: typeof MisCampanasIdRoute
+  MisCampanasIndexRoute: typeof MisCampanasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +86,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NuevaCampanaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mis-campanas/': {
+      id: '/mis-campanas/'
+      path: '/mis-campanas'
+      fullPath: '/mis-campanas/'
+      preLoaderRoute: typeof MisCampanasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mis-campanas/$id': {
+      id: '/mis-campanas/$id'
+      path: '/mis-campanas/$id'
+      fullPath: '/mis-campanas/$id'
+      preLoaderRoute: typeof MisCampanasIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NuevaCampanaRoute: NuevaCampanaRoute,
+  MisCampanasIdRoute: MisCampanasIdRoute,
+  MisCampanasIndexRoute: MisCampanasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
