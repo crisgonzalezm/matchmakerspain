@@ -148,7 +148,7 @@ function Detalle() {
         <h2 className="text-3xl">Shortlist</h2>
         {shortRanks.length === 0 && <p className="mt-3 text-muted-foreground">No hay perfiles en la shortlist. Añádelos desde el resto del ranking.</p>}
         <ol className="mt-4 space-y-4">
-          {shortRanks.map((r) => byId[r.id] && <RankRow key={r.id} r={r} p={byId[r.id]} on onToggle={() => toggle(r.id)} />)}
+          {shortRanks.map((r) => byId[r.id] && <RankRow key={r.id} r={r} p={byId[r.id]!} on onToggle={() => toggle(r.id)} />)}
         </ol>
       </section>
 
@@ -160,7 +160,7 @@ function Detalle() {
           </CollapsibleTrigger>
           <CollapsibleContent>
             <ol className="mt-4 space-y-4">
-              {rest.map((r) => byId[r.id] && <RankRow key={r.id} r={r} p={byId[r.id]} on={false} onToggle={() => toggle(r.id)} />)}
+              {rest.map((r) => byId[r.id] && <RankRow key={r.id} r={r} p={byId[r.id]!} on={false} onToggle={() => toggle(r.id)} />)}
             </ol>
           </CollapsibleContent>
         </Collapsible>
