@@ -10,17 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MisCampanasRouteImport } from './routes/mis-campanas'
 import { Route as NuevaCampanaRouteImport } from './routes/nueva-campana'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MisCampanasRoute = MisCampanasRouteImport.update({
-  id: '/mis-campanas',
-  path: '/mis-campanas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NuevaCampanaRoute = NuevaCampanaRouteImport.update({
@@ -31,31 +25,27 @@ const NuevaCampanaRoute = NuevaCampanaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/mis-campanas': typeof MisCampanasRoute
   '/nueva-campana': typeof NuevaCampanaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/mis-campanas': typeof MisCampanasRoute
   '/nueva-campana': typeof NuevaCampanaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/mis-campanas': typeof MisCampanasRoute
   '/nueva-campana': typeof NuevaCampanaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/mis-campanas' | '/nueva-campana'
+  fullPaths: '/' | '/nueva-campana'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/mis-campanas' | '/nueva-campana'
-  id: '__root__' | '/' | '/mis-campanas' | '/nueva-campana'
+  to: '/' | '/nueva-campana'
+  id: '__root__' | '/' | '/nueva-campana'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  MisCampanasRoute: typeof MisCampanasRoute
   NuevaCampanaRoute: typeof NuevaCampanaRoute
 }
 
@@ -66,13 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mis-campanas': {
-      id: '/mis-campanas'
-      path: '/mis-campanas'
-      fullPath: '/mis-campanas'
-      preLoaderRoute: typeof MisCampanasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nueva-campana': {
@@ -87,7 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  MisCampanasRoute: MisCampanasRoute,
   NuevaCampanaRoute: NuevaCampanaRoute,
 }
 export const routeTree = rootRouteImport
