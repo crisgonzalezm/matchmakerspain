@@ -93,3 +93,12 @@
     letter-spacing: -0.01em;
   }
 }
+
+@media print {
+  @page { size: A4; margin: 16mm; }
+  body * { visibility: hidden; }
+  .print-doc, .print-doc * { visibility: visible; }
+  .print-doc { position: absolute; left: 0; top: 0; width: 100%; border: none !important; box-shadow: none !important; padding: 0 !important; }
+  .print-doc h2, .print-doc h3, .print-doc li { break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

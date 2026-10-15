@@ -20,6 +20,8 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          proposal: string | null
+          proposal_at: string | null
           ranking: Json
           shortlist: string[]
         }
@@ -28,6 +30,8 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          proposal?: string | null
+          proposal_at?: string | null
           ranking?: Json
           shortlist?: string[]
         }
@@ -36,6 +40,8 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          proposal?: string | null
+          proposal_at?: string | null
           ranking?: Json
           shortlist?: string[]
         }

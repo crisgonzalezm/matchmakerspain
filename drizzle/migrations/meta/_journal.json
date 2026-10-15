@@ -15,6 +15,13 @@
       "when": 1791887042759,
       "tag": "0001_create_campaigns",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792064189632,
+      "tag": "0002_campaign_proposal",
+      "breakpoints": true
     }
   ]
 }

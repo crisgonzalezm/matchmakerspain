@@ -71,7 +71,7 @@ function NuevaCampana() {
   const [ranking, setRanking] = useState<RankItem[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState<string | null>(null);
   const rank = useServerFn(rankInfluencers);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ function NuevaCampana() {
 
   const search = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    setStatus("loading"); setError(""); setSaved(false); setSelected([]);
+    setStatus("loading"); setError(""); setSaved(null); setSelected([]);
     setTimeout(() => document.getElementById("resultados")?.scrollIntoView({ behavior: "smooth" }), 50);
     try {
       const res = await rank({ data: { brief: b } });
@@ -103,15 +103,15 @@ function NuevaCampana() {
 
   const save = async () => {
     setSaving(true);
-    const { error } = await supabase.from("campaigns").insert({
+    const { data: row, error } = await supabase.from("campaigns").insert({
       name: b.name || `${b.brand} · campaña`,
       brief: b as never,
       ranking: ranking.map((r) => ({ ...r, fee: fees[r.id] ?? 0, name: byId[r.id]?.name })) as never,
       shortlist: selected,
-    });
+    }).select("id").single();
     setSaving(false);
-    if (error) { toast.error("No se pudo guardar la campaña."); return; }
-    setSaved(true);
+    if (error || !row) { toast.error("No se pudo guardar la campaña."); return; }
+    setSaved(row.id);
     toast.success("Campaña guardada", { description: "Podrás consultarla en Mis campañas." });
   };
 
@@ -269,7 +269,7 @@ function NuevaCampana() {
               {cost.over && <span className="ml-2 text-destructive">Supera el presupuesto</span>}
             </p>
             {saved ? (
-              <p className="flex items-center gap-2 text-sm text-primary"><Check className="h-4 w-4" /> Campaña guardada · <Link to="/mis-campanas" className="underline">Mis campañas</Link></p>
+              <p className="flex items-center gap-2 text-sm text-primary"><Check className="h-4 w-4" /> Campaña guardada · <Link to="/mis-campanas/$id" params={{ id: saved }} className="underline">Ver campaña</Link></p>
             ) : (
               <Button onClick={save} disabled={saving}>{saving ? "Guardando…" : "Guardar campaña"}</Button>
             )}
