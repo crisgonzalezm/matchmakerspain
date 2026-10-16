@@ -9,42 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedNuevaCampanaRouteImport } from './routes/_authenticated/nueva-campana'
 import { Route as AuthenticatedMisCampanasIndexRouteImport } from './routes/_authenticated/mis-campanas.index'
 import { Route as AuthenticatedMisCampanasIdRouteImport } from './routes/_authenticated/mis-campanas.$id'
 
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedNuevaCampanaRoute =
   AuthenticatedNuevaCampanaRouteImport.update({
-    id: '/_authenticated/nueva-campana',
+    id: '/nueva-campana',
     path: '/nueva-campana',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMisCampanasIndexRoute =
   AuthenticatedMisCampanasIndexRouteImport.update({
-    id: '/_authenticated/mis-campanas/',
+    id: '/mis-campanas/',
     path: '/mis-campanas/',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMisCampanasIdRoute =
   AuthenticatedMisCampanasIdRouteImport.update({
-    id: '/_authenticated/mis-campanas/$id',
+    id: '/mis-campanas/$id',
     path: '/mis-campanas/$id',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/nueva-campana': typeof AuthenticatedNuevaCampanaRoute
   '/': typeof AuthenticatedIndexRoute
+  '/auth': typeof AuthRoute
+  '/nueva-campana': typeof AuthenticatedNuevaCampanaRoute
   '/mis-campanas/$id': typeof AuthenticatedMisCampanasIdRoute
   '/mis-campanas/': typeof AuthenticatedMisCampanasIndexRoute
 }
 export interface FileRoutesByTo {
+  '/auth': typeof AuthRoute
   '/nueva-campana': typeof AuthenticatedNuevaCampanaRoute
   '/': typeof AuthenticatedIndexRoute
   '/mis-campanas/$id': typeof AuthenticatedMisCampanasIdRoute
@@ -52,6 +65,8 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/_authenticated/nueva-campana': typeof AuthenticatedNuevaCampanaRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/mis-campanas/$id': typeof AuthenticatedMisCampanasIdRoute
@@ -59,11 +74,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/nueva-campana' | '/' | '/mis-campanas/$id' | '/mis-campanas/'
+  fullPaths:
+    '/' | '/auth' | '/nueva-campana' | '/mis-campanas/$id' | '/mis-campanas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/nueva-campana' | '/' | '/mis-campanas/$id' | '/mis-campanas'
+  to: '/auth' | '/nueva-campana' | '/' | '/mis-campanas/$id' | '/mis-campanas'
   id:
     | '__root__'
+    | '/_authenticated'
+    | '/auth'
     | '/_authenticated/nueva-campana'
     | '/_authenticated/'
     | '/_authenticated/mis-campanas/$id'
@@ -71,50 +89,77 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthenticatedNuevaCampanaRoute: typeof AuthenticatedNuevaCampanaRoute
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedMisCampanasIdRoute: typeof AuthenticatedMisCampanasIdRoute
-  AuthenticatedMisCampanasIndexRoute: typeof AuthenticatedMisCampanasIndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/': {
       id: '/_authenticated/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/nueva-campana': {
       id: '/_authenticated/nueva-campana'
       path: '/nueva-campana'
       fullPath: '/nueva-campana'
       preLoaderRoute: typeof AuthenticatedNuevaCampanaRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/mis-campanas/': {
       id: '/_authenticated/mis-campanas/'
       path: '/mis-campanas'
       fullPath: '/mis-campanas/'
       preLoaderRoute: typeof AuthenticatedMisCampanasIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/mis-campanas/$id': {
       id: '/_authenticated/mis-campanas/$id'
       path: '/mis-campanas/$id'
       fullPath: '/mis-campanas/$id'
       preLoaderRoute: typeof AuthenticatedMisCampanasIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedNuevaCampanaRoute: typeof AuthenticatedNuevaCampanaRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedMisCampanasIdRoute: typeof AuthenticatedMisCampanasIdRoute
+  AuthenticatedMisCampanasIndexRoute: typeof AuthenticatedMisCampanasIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNuevaCampanaRoute: AuthenticatedNuevaCampanaRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedMisCampanasIdRoute: AuthenticatedMisCampanasIdRoute,
   AuthenticatedMisCampanasIndexRoute: AuthenticatedMisCampanasIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

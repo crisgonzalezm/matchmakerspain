@@ -1,6 +1,7 @@
-import { Link } from "@tanstack/react-router";
-import { Users, Sparkles, FolderOpen, Menu } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { Users, Sparkles, FolderOpen, Menu, LogOut } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
@@ -57,6 +58,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
           {label}
         </Link>
       ))}
+      <SignOut />
     </nav>
   );
 }
