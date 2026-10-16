@@ -1,21 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 
 export const generateProposal = createServerFn({ method: "POST" })
-  .inputValidator((d: { id: string }) => d)
-  .handler(async ({ data }): Promise<{ proposal: string } | { error: string }> => {
-    const { createClient } = await import("@supabase/supabase-js");
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-    const sb = createClient(process.env["SUPABASE_URL"]!, key, {
-      auth: { persistSession: false, autoRefreshToken: false },
-      global: {
-        fetch: (input, init) => {
-          const h = new Headers(init?.headers);
-          if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
-          h.set("apikey", key);
-          return fetch(input, { ...init, headers: h });
-        },
-      },
-    });
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => {
+    if (typeof d?.id !== "string" || !/^[0-9a-f-]{36}$/i.test(d.id)) throw new Error("Invalid id");
+    return { id: d.id };
+  })
+  .handler(async ({ data, context }): Promise<{ proposal: string } | { error: string }> => {
+    const sb = context.supabase;
     const { data: c } = await sb.from("campaigns").select("*").eq("id", data.id).maybeSingle();
     if (!c) return { error: "No se ha encontrado la campaña." };
     if (!c.shortlist.length) return { error: "Añade al menos un perfil a la shortlist antes de generar la propuesta." };

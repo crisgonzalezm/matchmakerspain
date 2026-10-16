@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { formatEur, shortlistCost, type Brief } from "@/lib/campaigns";
 
-export const Route = createFileRoute("/mis-campanas/")({
+export const Route = createFileRoute("/_authenticated/mis-campanas/")({
   head: () => ({
     meta: [
       { title: "Mis campañas · Matchmaker" },
