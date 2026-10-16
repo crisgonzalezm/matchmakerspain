@@ -14,7 +14,7 @@ import { PLATFORMS, capitalize, formatFollowers, type Influencer } from "@/lib/i
 import { EMPTY_BRIEF, EXAMPLE_BRIEF, OBJECTIVES, formatEur, shortlistCost, type Brief, type RankItem } from "@/lib/campaigns";
 import { rankInfluencers } from "@/lib/ranking.functions";
 
-export const Route = createFileRoute("/nueva-campana")({
+export const Route = createFileRoute("/_authenticated/nueva-campana")({
   head: () => ({
     meta: [
       { title: "Nueva campaña · Matchmaker" },

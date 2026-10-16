@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Brief, RankItem } from "./campaigns";
 
 const SCHEMA = {
@@ -24,21 +25,10 @@ const SCHEMA = {
 };
 
 export const rankInfluencers = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: { brief: Brief }) => d)
-  .handler(async ({ data }): Promise<{ results: RankItem[] } | { error: string }> => {
-    const { createClient } = await import("@supabase/supabase-js");
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-    const sb = createClient(process.env["SUPABASE_URL"]!, key, {
-      auth: { persistSession: false, autoRefreshToken: false },
-      global: {
-        fetch: (input, init) => {
-          const h = new Headers(init?.headers);
-          if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
-          h.set("apikey", key);
-          return fetch(input, { ...init, headers: h });
-        },
-      },
-    });
+  .handler(async ({ data, context }): Promise<{ results: RankItem[] } | { error: string }> => {
+    const sb = context.supabase;
     const { data: profiles, error } = await sb.from("influencers").select("*");
     if (error || !profiles) return { error: "No se pudieron cargar los perfiles." };
 

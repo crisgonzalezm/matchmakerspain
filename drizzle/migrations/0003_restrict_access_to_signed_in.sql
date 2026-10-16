@@ -1,0 +1,18 @@
+REVOKE ALL ON public.influencers FROM anon;
+REVOKE ALL ON public.campaigns FROM anon;
+DROP POLICY IF EXISTS "public read" ON public.influencers;
+DROP POLICY IF EXISTS "public insert" ON public.influencers;
+DROP POLICY IF EXISTS "public update" ON public.influencers;
+DROP POLICY IF EXISTS "public delete" ON public.influencers;
+DROP POLICY IF EXISTS "public read" ON public.campaigns;
+DROP POLICY IF EXISTS "public insert" ON public.campaigns;
+DROP POLICY IF EXISTS "public update" ON public.campaigns;
+DROP POLICY IF EXISTS "public delete" ON public.campaigns;
+CREATE POLICY "team read" ON public.influencers FOR SELECT TO authenticated USING (auth.uid() IS NOT NULL);
+CREATE POLICY "team insert" ON public.influencers FOR INSERT TO authenticated WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "team update" ON public.influencers FOR UPDATE TO authenticated USING (auth.uid() IS NOT NULL) WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "team delete" ON public.influencers FOR DELETE TO authenticated USING (auth.uid() IS NOT NULL);
+CREATE POLICY "team read" ON public.campaigns FOR SELECT TO authenticated USING (auth.uid() IS NOT NULL);
+CREATE POLICY "team insert" ON public.campaigns FOR INSERT TO authenticated WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "team update" ON public.campaigns FOR UPDATE TO authenticated USING (auth.uid() IS NOT NULL) WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "team delete" ON public.campaigns FOR DELETE TO authenticated USING (auth.uid() IS NOT NULL);

@@ -1,6 +1,7 @@
-import { Link } from "@tanstack/react-router";
-import { Users, Sparkles, FolderOpen, Menu } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { Users, Sparkles, FolderOpen, Menu, LogOut } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +22,26 @@ function Brand() {
   );
 }
 
+function SignOut() {
+  const navigate = useNavigate();
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
+    return () => data.subscription.unsubscribe();
+  }, []);
+  if (!signedIn) return null;
+  return (
+    <button
+      type="button"
+      className="mt-4 flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
+      onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/auth", replace: true }); }}
+    >
+      <LogOut className="h-4 w-4" /> Cerrar sesión
+    </button>
+  );
+}
+
 function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="mt-10 flex flex-col gap-1">
@@ -37,6 +58,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
           {label}
         </Link>
       ))}
+      <SignOut />
     </nav>
   );
 }

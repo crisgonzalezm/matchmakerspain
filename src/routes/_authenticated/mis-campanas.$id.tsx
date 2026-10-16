@@ -12,7 +12,7 @@ import { capitalize, formatFollowers, type Influencer } from "@/lib/influencers"
 import { formatEur, shortlistCost, type Brief, type RankItem } from "@/lib/campaigns";
 import { generateProposal } from "@/lib/proposal.functions";
 
-export const Route = createFileRoute("/mis-campanas/$id")({
+export const Route = createFileRoute("/_authenticated/mis-campanas/$id")({
   head: () => ({
     meta: [
       { title: "Detalle de campaña · Matchmaker" },
